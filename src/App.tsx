@@ -8,15 +8,11 @@ import { Footer } from './layout/footer/Footer';
 function App() {
   return (
     <BrowserRouter>
-    <div className="App">
-      <header className="App-header">
+      <header>
         <NavComponent></NavComponent>
       </header>
-      <main>
         <Navigation />
-      </main>
       <Footer></Footer>
-    </div>
     </BrowserRouter>
     
   );
