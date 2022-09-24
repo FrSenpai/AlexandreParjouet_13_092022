@@ -4,7 +4,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { Home } from "../../components/home/Home";
+import { Home } from "../../pages/home/Home";
 export function Navigation() {
     return (
         
