@@ -1,11 +1,20 @@
+import { useSelector } from "react-redux";
+import store from "../store/store";
 
 let header = new Headers();
 header.set('Content-Type', 'application/json');
 header.set('Accept', 'application/json');
 
 
+function setJWT() {
+    const user = store.getState().user
+    if (user.token !== null) {
+        header.set('Authorization', 'Bearer ' + user.token);
+    }
+}
+
 function objectToParamString(obj: any) {
-    if(!obj) return '';
+    if (!obj) return '';
     var str = '?';
     for (var key in obj) {
         if (str != '?') {
@@ -30,7 +39,7 @@ export async function get(url: string, options?: {}): Promise<any> {
 
 export async function post(url: string, options?: {}): Promise<any> {
     console.log(url + objectToParamString(options));
-    // setBearer()
+    setJWT()
     const res = await fetch(url, {
         method: 'POST',
         headers: header,
