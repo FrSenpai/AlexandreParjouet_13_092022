@@ -1,7 +1,11 @@
-import { Link, useLocation, useParams, useRoutes } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import logoIcon from "../../assets/img/argentBankLogo.png"
+import { useDispatch } from 'react-redux'
+import { removeUser } from "../../store/reducers/user/UserReducer"
+import store from "../../store/store"
 export function Navigation() {
     const pathname: string = useLocation().pathname
+    const dispatch = useDispatch()
     return (
         <nav className="main-nav">
             <Link className="main-nav-logo" to="/">
@@ -22,7 +26,10 @@ export function Navigation() {
                     <i className="fa fa-user-circle"></i>
                     Tony
                 </Link>
-                <Link hidden={pathname !== "/user"} className="main-nav-item" to="signOut">
+                <Link onClick={() => {
+                    dispatch(removeUser())
+                    console.log(store.getState().user)
+                    }} hidden={pathname !== "/user"} className="main-nav-item" to="/">
                     <i className="fa fa-sign-out"></i>
                     Sign Out
                 </Link>

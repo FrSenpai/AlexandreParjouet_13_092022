@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { login } from "../../services/UsersService";
 import "./signIn.css";
+import { useDispatch } from 'react-redux'
+import { setUser } from "../../store/reducers/user/UserReducer";
+import { DateTime } from "luxon";
+import { useNavigate } from "react-router-dom";
+import store from "../../store/store";
 export function SignIn() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [form, setForm] = useState({email:"", password:""});
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    console.log(store.getState().user)
+    if (store.getState().user.token !== null) {
+        navigate("/user")
+    }
     return (
         <main className="main bg-dark">
             <section className="sign-in-content">
@@ -33,7 +44,8 @@ export function SignIn() {
                             console.log(user)
                             setLoading(false)
                             if (user?.body) {
-                                
+                                dispatch(setUser({token: user.body.token, expiresAt:DateTime.now().plus({days: 1}).toMillis()}))
+                                navigate("/user")
                             } else {
                                 setError(user?.message)
                             }
