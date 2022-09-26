@@ -14,7 +14,7 @@ export function SignIn() {
     const navigate = useNavigate()
     const user = useSelector((state: any) => state.user)
     useEffect(() => {
-        if (user.token !== null) {
+        if (user.token !== null &&  DateTime.now().toMillis() < user.expiresAt ) {
             navigate("/profile")
         }
         
@@ -40,11 +40,9 @@ export function SignIn() {
                     </div>
                     <p className="errorSignIn" hidden={error === ""}>{error}</p>
                     <button onClick={async () => {
-                        console.log(form)
                         if (isFormValid(form).valid) {
                             setLoading(true);
                             const user = await login(form.email, form.password);
-                            console.log(user)
                             setLoading(false)
                             if (user?.body) {
                                 dispatch(setUser({ token: user.body.token, expiresAt: DateTime.now().plus({ days: 1 }).toMillis() }))
@@ -56,7 +54,6 @@ export function SignIn() {
                             setError(isFormValid(form).error);
                         }
                     }} type="button" className="sign-in-button">Sign In</button>
-                    {/* <a href="./user.html" class="sign-in-button">Sign In</a> */}
                 </form>
             </section>
         </main>

@@ -1,14 +1,14 @@
+import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import useSWR, { mutate, useSWRConfig } from "swr"
+import {  useSWRConfig } from "swr"
 import { updateUserProfile, useUserProfile } from "../../services/UsersService"
-import { get, post } from "../../utils/http-methods"
 import "./user.css"
 export function User() {
     //handling unlogged users and redirect them
     useEffect(() => {
-        if (user.token === null) {
+        if (user.token === null && DateTime.now().toMillis() < user.expiresAt) {
             navigate("/")
             return
         }
@@ -21,6 +21,7 @@ export function User() {
     const [editMode, setEditMode] = useState(false)
     const { mutate } = useSWRConfig()
     const [form, setForm] = useState({ firstName: "", lastName: "" })
+    const [formError, setFormError] = useState("")
     if (userProfile.isError) return <div>failed to load</div>
     if (userProfile.isLoading) return <div>loading...</div>
     return (
@@ -31,15 +32,21 @@ export function User() {
                     <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, firstName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="First name" defaultValue={userProfile.data.body.firstName} />
                     <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, lastName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="Last name" defaultValue={userProfile.data.body.lastName} />
                 </div>
+                <span className="formError" hidden={formError===""}>{formError}</span>
                 <div className="ctnInput">
                     <button onClick={async () => {
                         if (editMode) {
-                            //TODO: handle error
+                            if (!isFormValid(form.firstName, form.lastName)) {
+                                setFormError("First name and last name must have at least 2 characters")
+                                return
+                            }
+                            setFormError("")
                             const updatedUser = await updateUserProfile(form.firstName, form.lastName)
-                            console.log(updatedUser)
                             if (updatedUser.body) {
                                 mutate('http://localhost:3001/api/v1/user/profile')
                                 setEditMode(false)
+                            } else {
+                                setFormError("Error while updating profile")
                             }
                         } else {
                             setEditMode(true)
@@ -70,4 +77,13 @@ export function User() {
             })}
         </main>
     )
+}
+/**
+ * 
+ * @param firstName {String} - First name of the user
+ * @param lastName {String} - Last name of the user
+ * @returns boolean - true if the form is valid, false otherwise
+ */
+function isFormValid(firstName: string, lastName: string):boolean {
+    return firstName.length > 1 && lastName.length > 1
 }
