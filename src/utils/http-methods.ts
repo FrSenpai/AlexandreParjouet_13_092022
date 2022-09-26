@@ -27,7 +27,7 @@ function objectToParamString(obj: any) {
 
 export async function get(url: string, options?: {}): Promise<any> {
     console.log(url + objectToParamString(options));
-    // setBearer()
+    setJWT()
     const res = await fetch(url + objectToParamString(options), {
         method: 'GET',
         headers: header,
@@ -51,7 +51,7 @@ export async function post(url: string, options?: {}): Promise<any> {
 }
 
 export async function put(url: string, options?: {}): Promise<any> {
-    // setBearer()
+    setJWT()
     const res = await fetch(url, {
         method: 'PUT',
         headers: header,

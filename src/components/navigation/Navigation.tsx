@@ -20,7 +20,7 @@ export function Navigation() {
                     <i className="fa fa-user-circle"></i>
                     Sign In
                 </Link>
-                <Link hidden={user.token === null} className="main-nav-item" to="user">
+                <Link hidden={user.token === null} className="main-nav-item" to="profile">
                     <i className="fa fa-user-circle"></i>
                     Tony
                 </Link>

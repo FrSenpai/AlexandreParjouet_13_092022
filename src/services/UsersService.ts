@@ -1,4 +1,4 @@
-import { post } from "../utils/http-methods";
+import { post, put } from "../utils/http-methods";
 import useSWR from "swr"
 
 export function login(email: string, password: string) {
@@ -12,6 +12,8 @@ export function useUserProfile(){
             isLoading: !error && !data,
             isError: error
           }
+}
 
-
+export function updateUserProfile(firstName:string, lastName:string) {
+    return put("http://localhost:3001/api/v1/user/profile", { firstName, lastName });
 }
