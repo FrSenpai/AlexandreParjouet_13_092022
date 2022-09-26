@@ -18,27 +18,35 @@ export function User() {
     //Get and handling potential errors of profile data
     const userProfile = useUserProfile()
     const [editMode, setEditMode] = useState(false)
-    const [form, setForm] = useState({ firstName: userProfile.data.body.firstName, lastName: userProfile.data.body.lastName })
+    console.log(userProfile)
+    const [form, setForm] = useState({ firstName: "", lastName: "" })
     if (userProfile.isError) return <div>failed to load</div>
     if (userProfile.isLoading) return <div>loading...</div>
-
-
     return (
         <main className="main bg-dark">
             <div className="header">
-                <h1 style={{ marginTop: 0, paddingTop: "0.67em" }}>Welcome back<br />
-                    <span hidden={editMode}>{userProfile.data.body.firstName} {userProfile.data.body.lastName}!</span>
-                    <input onChange={(e) => setForm({ ...form, firstName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="First name" value={form.firstName} />
-                    <input onChange={(e) => setForm({ ...form, lastName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="Last name" value={form.lastName} />
-                </h1>
-                <button onClick={() => {
-                    if (editMode) {
-                        //TODO: save data to db
+                <h1 style={{ marginTop: 0, paddingTop: "0.67em" }}>Welcome back<br /><span hidden={editMode}>{userProfile.data.body.firstName} {userProfile.data.body.lastName}!</span></h1>
+                <div className="ctnInput">
+                    <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, firstName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="First name" defaultValue={userProfile.data.body.firstName} />
+                    <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, lastName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="Last name" defaultValue={userProfile.data.body.lastName} />
+
+                </div>
+                <div className="ctnInput">
+                    <button onClick={() => {
+                        if (editMode) {
+                            //TODO: save data to db
+                            setEditMode(false)
+                        } else {
+                            setEditMode(true)
+                        }
+                    }} className={editMode ? "edit-button editBtnMode" : "edit-button"}>{editMode ? "Save" : "Edit Name"}</button>
+                    <button hidden={!editMode} onClick={() => {
+                        //CANCEL
+                        setForm({ firstName: userProfile.data.body.firstName, lastName: userProfile.data.body.lastName })
                         setEditMode(false)
-                    } else {
-                        setEditMode(true)
-                    }
-                }} className="edit-button">{editMode ? "Save Name" : "Edit Name"}</button>
+                    }} className="edit-button editBtnMode">Cancel</button>
+                </div>
+
             </div>
             <h2 className="sr-only">Accounts</h2>
             {accounts.map((account, index: number) => {
@@ -55,8 +63,6 @@ export function User() {
                     </section>
                 )
             })}
-
-
         </main>
     )
 }
