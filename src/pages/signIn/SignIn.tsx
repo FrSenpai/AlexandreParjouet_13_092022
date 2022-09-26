@@ -15,7 +15,7 @@ export function SignIn() {
     const user = useSelector((state: any) => state.user)
     useEffect(() => {
         if (user.token !== null) {
-            navigate("/user")
+            navigate("/profile")
         }
         
     }, [])
@@ -48,7 +48,7 @@ export function SignIn() {
                             setLoading(false)
                             if (user?.body) {
                                 dispatch(setUser({ token: user.body.token, expiresAt: DateTime.now().plus({ days: 1 }).toMillis() }))
-                                navigate("/user")
+                                navigate("/profile")
                             } else {
                                 setError(user?.message)
                             }

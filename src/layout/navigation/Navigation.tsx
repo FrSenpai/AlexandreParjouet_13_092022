@@ -10,11 +10,10 @@ import { SignIn } from "../../pages/signIn/SignIn";
 import { User } from "../../pages/user/User";
 export function Navigation() {
     return (
-        
         <Routes>
             <Route path="/" element={<Home  />} />
             <Route path="login" element={<SignIn  />} />
-            <Route path="user" element={<User  />} />
+            <Route path="profile" element={<User  />} />
             {/* <Route path="profile"  >
                 <Route path="/profile" element={<Error />} />
                 <Route path=":id" element={<Profile />} />
