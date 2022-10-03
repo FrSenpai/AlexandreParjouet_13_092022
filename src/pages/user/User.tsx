@@ -7,14 +7,18 @@ import { updateUserProfile, useUserProfile } from "../../services/UsersService"
 import "./user.css"
 export function User() {
     //handling unlogged users and redirect them
+    //TODO better handling of unlogged users
+    const navigate = useNavigate()
     useEffect(() => {
-        if (user.token === null && DateTime.now().toMillis() < user.expiresAt) {
+        if (user.token === null || !(DateTime.now().toMillis() < user.expiresAt)) {
+            console.log("redirect")
+            
             navigate("/")
             return
         }
     }, [])
     const accounts = [{ title: "Argent Bank Checking (x8349)", amount: "$2,082.79", description: "Available Balance" }, { title: "Argent Bank Savings (x6712)", amount: "$10,928.42", description: "Available Balance" }, { title: "Argent Bank Credit Card (x8349)", amount: "$184.30", description: "Current Balance" }]
-    const navigate = useNavigate()
+    
     const user = useSelector((state: any) => state.user)
     // -- Get and handling potential errors of profile data --
     const userProfile = useUserProfile()

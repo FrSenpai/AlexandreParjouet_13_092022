@@ -42,7 +42,7 @@ body {
   white-space: nowrap !important; /* 3 */
 }
 
-.main-nav {
+/* .main-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,9 +75,9 @@ body {
 .main-nav-logo-image {
   max-width: 100%;
   width: 200px;
-}
+} */
 
-.hero {
+/* .hero {
   background-image: url('assets/img/bank-tree.jpeg');
   background-position: 0 -50px;
   background-size: cover;
@@ -158,9 +158,9 @@ body {
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-}
+} */
 
-.sign-in-button {
+/* .sign-in-button {
   display: block;
   width: 100%;
   padding: 8px;
@@ -207,9 +207,9 @@ body {
 .input-wrapper input {
   padding: 5px;
   font-size: 1.2rem;
-}
+} */
 
-.footer {
+/* .footer {
   display: flex;
   justify-content: center;
   border-top: 2px solid #ccc;
@@ -219,9 +219,9 @@ body {
 .footer-text {
   margin: 0;
   padding: 0;
-}
+} */
 
-.account {
+/* .account {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -256,22 +256,22 @@ body {
 .account-content-wrapper {
   width: 100%;
   flex: 1;
-}
+} */
 
-.edit-button {
+/* .edit-button {
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
   font-weight: bold;
   padding: 10px;
-}
+} */
 
 .header {
   color: #fff;
   margin-bottom: 2rem;
 }
 
-.transaction-button {
+/* .transaction-button {
   display: block;
   width: 100%;
   padding: 8px;
@@ -281,9 +281,9 @@ body {
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
-}
+} */
 
-@media (min-width: 720px) {
+/* @media (min-width: 720px) {
   .account {
     flex-direction: row;
   }
@@ -295,7 +295,7 @@ body {
   .transaction-button {
     width: 200px;
   }
-}
+} */
 
 
 
