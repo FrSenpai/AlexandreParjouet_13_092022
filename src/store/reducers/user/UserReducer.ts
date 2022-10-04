@@ -1,28 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit'
 interface ISet {
-    token:string,
-    expiresAt:number
+  token: string,
+  expiresAt: number
+}
+const initialState = {
+  auth: {
+    token: null,
+    expiresAt: null
+  },
+  profile: null
+
 }
 export const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    token: null,
-    expiresAt:null
-  },
+  initialState,
   reducers: {
     setUser: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      console.log(action.payload)
-
-      state.token = action.payload.token
-      state.expiresAt = action.payload.expiresAt
+      console.log("payload", action.payload)
+      state.auth = action.payload?.auth
+      state.profile = action.payload?.profile
     },
     removeUser: (state) => {
-        state.token = null
-        state.expiresAt = null
+      //TODO remove user from local storage
+      state.auth = initialState.auth
+      state.profile = initialState.profile
     },
   },
 })

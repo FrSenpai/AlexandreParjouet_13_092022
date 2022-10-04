@@ -1,42 +1,43 @@
 import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import {  useSWRConfig } from "swr"
-import { updateUserProfile, useUserProfile } from "../../services/UsersService"
+import { useSWRConfig } from "swr"
+import { getUserProfile, updateUserProfile } from "../../services/UsersService"
+import { setUser } from "../../store/reducers/user/UserReducer"
 import "./user.css"
 export function User() {
-    //handling unlogged users and redirect them
-    //TODO better handling of unlogged users
     const navigate = useNavigate()
+    const user = useSelector((state: any) => state.user)
+    const dispatch = useDispatch()
     useEffect(() => {
-        if (user.token === null || !(DateTime.now().toMillis() < user.expiresAt)) {
-            console.log("redirect")
-            
+        //handling unlogged users and redirect them
+        if (user.auth.token === null || !(DateTime.now().toMillis() < user.auth.expiresAt)) {
             navigate("/")
             return
         }
+        // -- Get and handling potential errors of profile data --
+        getUserProfile().then((profile) => {
+            if (profile.status === 200) {
+                dispatch(setUser({ ...user, profile: profile.body }))
+            }
+        })
+
     }, [])
     const accounts = [{ title: "Argent Bank Checking (x8349)", amount: "$2,082.79", description: "Available Balance" }, { title: "Argent Bank Savings (x6712)", amount: "$10,928.42", description: "Available Balance" }, { title: "Argent Bank Credit Card (x8349)", amount: "$184.30", description: "Current Balance" }]
-    
-    const user = useSelector((state: any) => state.user)
-    // -- Get and handling potential errors of profile data --
-    const userProfile = useUserProfile()
     const [editMode, setEditMode] = useState(false)
-    const { mutate } = useSWRConfig()
     const [form, setForm] = useState({ firstName: "", lastName: "" })
     const [formError, setFormError] = useState("")
-    if (userProfile.isError) return <div>failed to load</div>
-    if (userProfile.isLoading) return <div>loading...</div>
+    if (!user?.profile) return <div>failed to load</div>
     return (
         <main className="main bg-dark">
             <div className="header">
-                <h1 style={{ marginTop: 0, paddingTop: "0.67em" }}>Welcome back<br /><span hidden={editMode}>{userProfile.data.body.firstName} {userProfile.data.body.lastName}!</span></h1>
+                <h1 style={{ marginTop: 0, paddingTop: "0.67em" }}>Welcome back<br /><span hidden={editMode}>{user.profile.firstName} {user.profile.lastName}!</span></h1>
                 <div className="ctnInput">
-                    <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, firstName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="First name" defaultValue={userProfile.data.body.firstName} />
-                    <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, lastName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="Last name" defaultValue={userProfile.data.body.lastName} />
+                    <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, firstName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="First name" defaultValue={user.profile.firstName} />
+                    <input className="editProfileNameInput" onChange={(e) => setForm({ ...form, lastName: e.currentTarget.value })} hidden={!editMode} type="text" placeholder="Last name" defaultValue={user.profile.lastName} />
                 </div>
-                <span className="formError" hidden={formError===""}>{formError}</span>
+                <span className="formError" hidden={formError === ""}>{formError}</span>
                 <div className="ctnInput">
                     <button onClick={async () => {
                         if (editMode) {
@@ -47,7 +48,8 @@ export function User() {
                             setFormError("")
                             const updatedUser = await updateUserProfile(form.firstName, form.lastName)
                             if (updatedUser.body) {
-                                mutate('http://localhost:3001/api/v1/user/profile')
+                                // mutate('http://localhost:3001/api/v1/user/profile')
+                                //TODO HYDRATE
                                 setEditMode(false)
                             } else {
                                 setFormError("Error while updating profile")
@@ -58,7 +60,7 @@ export function User() {
                     }} className={editMode ? "edit-button editBtnMode" : "edit-button"}>{editMode ? "Save" : "Edit Name"}</button>
                     <button hidden={!editMode} onClick={() => {
                         //CANCEL
-                        setForm({ firstName: userProfile.data.body.firstName, lastName: userProfile.data.body.lastName })
+                        setForm({ firstName: user.profile.firstName, lastName: user.profile.lastName })
                         setEditMode(false)
                     }} className="edit-button editBtnMode">Cancel</button>
                 </div>
@@ -88,6 +90,6 @@ export function User() {
  * @param lastName {String} - Last name of the user
  * @returns boolean - true if the form is valid, false otherwise
  */
-function isFormValid(firstName: string, lastName: string):boolean {
+function isFormValid(firstName: string, lastName: string): boolean {
     return firstName.length > 1 && lastName.length > 1
 }

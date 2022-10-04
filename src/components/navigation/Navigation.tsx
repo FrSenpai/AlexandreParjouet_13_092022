@@ -17,15 +17,15 @@ export function Navigation() {
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             <div>
-                <Link hidden={user.token !== null} className="main-nav-item" to="login">
+                <Link hidden={user.auth.token !== null} className="main-nav-item" to="login">
                     <i className="fa fa-user-circle"></i>
                     Sign In
                 </Link>
-                <Link hidden={user.token === null} className="main-nav-item" to="profile">
+                <Link hidden={user.auth.token === null} className="main-nav-item" to="profile">
                     <i className="fa fa-user-circle"></i>
                     Tony
                 </Link>
-                <Link onClick={() => dispatch(removeUser())} hidden={user.token === null} className="main-nav-item" to="/">
+                <Link onClick={() => dispatch(removeUser())} hidden={user.auth.token === null} className="main-nav-item" to="/">
                     <i className="fa fa-sign-out"></i>
                     Sign Out
                 </Link>

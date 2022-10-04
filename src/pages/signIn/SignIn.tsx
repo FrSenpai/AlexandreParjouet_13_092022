@@ -14,7 +14,7 @@ export function SignIn() {
     const navigate = useNavigate()
     const user = useSelector((state: any) => state.user)
     useEffect(() => {
-        if (user.token !== null &&  DateTime.now().toMillis() < user.expiresAt ) {
+        if (user.auth.token !== null &&  DateTime.now().toMillis() < user.auth.expiresAt ) {
             navigate("/profile")
         }
         
@@ -42,13 +42,13 @@ export function SignIn() {
                     <button onClick={async () => {
                         if (isFormValid(form).valid) {
                             setLoading(true);
-                            const user = await login(form.email, form.password);
+                            const userLogin = await login(form.email, form.password);
                             setLoading(false)
-                            if (user?.body) {
-                                dispatch(setUser({ token: user.body.token, expiresAt: DateTime.now().plus({ days: 1 }).toMillis() }))
+                            if (userLogin?.body) {
+                                dispatch(setUser({...user,auth:{ token: userLogin.body.token, expiresAt: DateTime.now().plus({ days: 1 }).toMillis()} }))
                                 navigate("/profile")
                             } else {
-                                setError(user?.message)
+                                setError(userLogin?.message)
                             }
                         } else {
                             setError(isFormValid(form).error);

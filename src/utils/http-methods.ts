@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { useSelector } from "react-redux";
 import store from "../store/store";
 
@@ -8,8 +9,8 @@ header.set('Accept', 'application/json');
 
 function setJWT() {
     const user = store.getState().user
-    if (user.token !== null) {
-        header.set('Authorization', 'Bearer ' + user.token);
+    if (user.auth.token !== null && user.auth.expiresAt && DateTime.now().toMillis() < user.auth.expiresAt) {
+        header.set('Authorization', 'Bearer ' + user.auth.token);
     }
 }
 
