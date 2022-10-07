@@ -1,8 +1,8 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import logoIcon from "../../assets/img/argentBankLogo.png"
 import { useDispatch, useSelector } from 'react-redux'
 import { removeUser } from "../../store/reducers/user/UserReducer"
-import './navigation.css'
+import './Navigation.css'
 export function Navigation() {
     const dispatch = useDispatch()
     const user = useSelector((state:any) => state.user)

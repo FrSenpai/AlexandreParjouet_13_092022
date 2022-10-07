@@ -1,4 +1,4 @@
-import "./featureItem.css";
+import "./FeatureItem.css";
 interface Img {
     src: any;
     alt: string;
