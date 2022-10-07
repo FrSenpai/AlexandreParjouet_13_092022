@@ -2,6 +2,9 @@
     color: red;
     font-size: 12px;
 }
+.fa {
+  font-size: inherit !important; 
+}
 .sign-in-button {
     display: block;
     width: 100%;

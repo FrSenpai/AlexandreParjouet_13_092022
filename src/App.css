@@ -1,5 +1,5 @@
 html {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Sen, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -40,6 +40,11 @@ body {
   position: absolute !important;
   width: 1px !important;
   white-space: nowrap !important; /* 3 */
+}
+
+.header {
+  color: #fff;
+  margin-bottom: 2rem;
 }
 
 /* SPINNER */
