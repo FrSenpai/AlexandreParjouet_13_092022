@@ -1,8 +1,6 @@
+import { Img } from "../../models/Features";
 import "./FeatureItem.css";
-interface Img {
-    src: any;
-    alt: string;
-}
+import PropTypes from 'prop-types'; 
 export function FeatureItem({ img, title, text }: { img: Img, title: string, text: string }) {
     return (
         <div className="feature-item">
@@ -11,4 +9,10 @@ export function FeatureItem({ img, title, text }: { img: Img, title: string, tex
             <p>{text}</p>
         </div>
     )
+}
+
+FeatureItem.propsType = {
+    img: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired
 }
