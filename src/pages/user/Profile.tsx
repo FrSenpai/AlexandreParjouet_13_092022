@@ -69,7 +69,7 @@ export function User() {
                 </div>
             </div>
             <h2 className="sr-only">Accounts</h2>
-            {accounts.map((account:IReadAccount, index: number) => <BankAccount account={account} index={index} ></BankAccount>)}
+            {accounts.map((account:IReadAccount, index: number) => <BankAccount key={"bdetailskey" + index} account={account} index={index} ></BankAccount>)}
         </main>
     )
 }

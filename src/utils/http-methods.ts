@@ -1,11 +1,8 @@
 import { DateTime } from 'luxon';
-import { useSelector } from "react-redux";
 import store from "../store/store";
-
 let header = new Headers();
 header.set('Content-Type', 'application/json');
 header.set('Accept', 'application/json');
-
 
 function setJWT() {
     const user = store.getState().user
@@ -27,7 +24,6 @@ function objectToParamString(obj: any) {
 }
 
 export async function get(url: string, options?: {}): Promise<any> {
-    console.log(url + objectToParamString(options));
     setJWT()
     const res = await fetch(url + objectToParamString(options), {
         method: 'GET',
@@ -39,7 +35,6 @@ export async function get(url: string, options?: {}): Promise<any> {
 }
 
 export async function post(url: string, options?: {}): Promise<any> {
-    console.log(url + objectToParamString(options));
     setJWT()
     const res = await fetch(url, {
         method: 'POST',
@@ -47,7 +42,6 @@ export async function post(url: string, options?: {}): Promise<any> {
         body: JSON.stringify(options),
     });
     const json = await res.json();
-    console.log(json)
     return json;
 }
 
