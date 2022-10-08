@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { IReadAccount } from "../../models/Accounts"
 import { getUserProfile, updateUserProfile, isLogged } from "../../services/UsersService"
 import { setUser } from "../../store/reducers/user/UserReducer"
+import { BankAccount } from "./bankAccount/BankAccount"
 import "./Profile.css"
-
+/**
+ * @returns HTML code for the user profile page
+ */
 export function User() {
     const navigate = useNavigate()
     const user = useSelector((state: any) => state.user)
@@ -63,23 +67,9 @@ export function User() {
                     <button onClick={() => handleEditNameBtn()} className={form.editMode ? "edit-button editBtnMode" : "edit-button"}>{form.editMode ? "Save" : "Edit Name"}</button>
                     <button hidden={!form.editMode} onClick={() => setForm({ ...form, data: {firstName: user.profile.firstName, lastName: user.profile.lastName }, error: "", editMode: false })} className="edit-button editBtnMode">Cancel</button>
                 </div>
-
             </div>
             <h2 className="sr-only">Accounts</h2>
-            {accounts.map((account, index: number) => {
-                return (
-                    <section key={"acc" + index} className="account">
-                        <div className="account-content-wrapper">
-                            <h3 className="account-title">{account.title}</h3>
-                            <p className="account-amount">{account.amount}</p>
-                            <p className="account-amount-description">{account.description}</p>
-                        </div>
-                        <div className="account-content-wrapper cta">
-                            <button className="transaction-button">View transactions</button>
-                        </div>
-                    </section>
-                )
-            })}
+            {accounts.map((account:IReadAccount, index: number) => <BankAccount account={account} index={index} ></BankAccount>)}
         </main>
     )
 }
