@@ -23,7 +23,7 @@ export function Navigation() {
                 </Link>
                 <Link hidden={user.auth.token === null} className="main-nav-item" to="profile">
                     <i className="fa fa-user-circle"></i>
-                    Tony
+                    {user.profile.firstName}
                 </Link>
                 <Link onClick={() => dispatch(removeUser())} hidden={user.auth.token === null} className="main-nav-item" to="/">
                     <i className="fa fa-sign-out"></i>
