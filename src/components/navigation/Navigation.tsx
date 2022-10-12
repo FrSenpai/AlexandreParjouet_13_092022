@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logoIcon from "../../assets/img/argentBankLogo.png"
 import { useDispatch, useSelector } from 'react-redux'
 import { removeUser } from "../../store/reducers/user/UserReducer"
@@ -6,6 +6,7 @@ import './Navigation.css'
 export function Navigation() {
     const dispatch = useDispatch()
     const user = useSelector((state:any) => state.user)
+    const navigate = useNavigate()
     return (
         <nav className="main-nav">
             <Link className="main-nav-logo" to="/">
@@ -23,9 +24,12 @@ export function Navigation() {
                 </Link>
                 <Link hidden={user.auth.token === null} className="main-nav-item" to="profile">
                     <i className="fa fa-user-circle"></i>
-                    Tony
+                    {user.profile?.firstName ? user.profile.firstName : ""}
                 </Link>
-                <Link onClick={() => dispatch(removeUser())} hidden={user.auth.token === null} className="main-nav-item" to="/">
+                <Link onClick={() => {
+                    dispatch(removeUser())
+                    navigate("/")
+                }} hidden={user.auth.token === null} className="main-nav-item" to="/">
                     <i className="fa fa-sign-out"></i>
                     Sign Out
                 </Link>
